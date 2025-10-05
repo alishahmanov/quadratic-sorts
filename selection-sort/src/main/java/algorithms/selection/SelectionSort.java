@@ -1,26 +1,31 @@
 package algorithms.selection;
 
-public class SelectionSort {
+import metrics.PerformanceTracker;
 
-    public static void sort(int[] arr) {
+public class SelectionSort {
+    public static void sort(int[] arr, PerformanceTracker tracker) {
         int n = arr.length;
+        tracker.startTimer();
 
         for (int i = 0; i < n - 1; i++) {
             int minIndex = i;
-
-            // Находим минимальный элемент в неотсортированной части
             for (int j = i + 1; j < n; j++) {
+                tracker.incComparisons();
+                tracker.incArrayAccesses(2);
                 if (arr[j] < arr[minIndex]) {
                     minIndex = j;
                 }
             }
 
-            // Если нашли новый минимум — меняем местами
             if (minIndex != i) {
-                int temp = arr[minIndex];
-                arr[minIndex] = arr[i];
-                arr[i] = temp;
+                tracker.incSwaps();
+                tracker.incArrayAccesses(4);
+                int temp = arr[i];
+                arr[i] = arr[minIndex];
+                arr[minIndex] = temp;
             }
         }
+
+        tracker.stopTimer();
     }
 }
